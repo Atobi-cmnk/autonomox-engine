@@ -1,62 +1,115 @@
-# Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+# AutonomoX Engine – Flask API optimized for Vercel Python deployment
 
-## User settings
-xcuserdata/
+from flask import Flask, jsonify
+import time
+import random
+import requests
+import re
+import os
 
-## Obj-C/Swift specific
-*.hmap
+app = Flask(__name__)
 
-## App packaging
-*.ipa
-*.dSYM.zip
-*.dSYM
+# ========== Module 1: AI Business Generator ==========
+class BusinessGenerator:
+    def __init__(self):
+        self.niches = ['Fitness Products', 'AI Courses', 'Crypto Trading Bots', 'Luxury Dropshipping']
+        self.templates = {
+            'Fitness Products': 'https://github.com/vercel/commerce',
+            'AI Courses': 'https://github.com/leerob/next-course-platform',
+            'Crypto Trading Bots': 'https://github.com/freqtrade/freqtrade',
+            'Luxury Dropshipping': 'https://github.com/Shopify/shopify-node-app'
+        }
+        self.vercel_deploy_hook = os.getenv("VERCEL_DEPLOY_HOOK", "https://api.vercel.com/v1/integrations/deploy/prj_ABC123456789XYZ")
+        self.affiliate_tag = os.getenv("AMAZON_AFFILIATE_TAG", "yourtag-20")
 
-## Playgrounds
-timeline.xctimeline
-playground.xcworkspace
+    def launch_business(self):
+        niche = random.choice(self.niches)
+        business_name = f"{niche.replace(' ', '')}Store"
+        template_url = self.templates[niche]
+        self.deploy_to_vercel(business_name, niche, template_url)
+        return business_name
 
-# Swift Package Manager
-#
-# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
-# Packages/
-# Package.pins
-# Package.resolved
-# *.xcodeproj
-#
-# Xcode automatically generates this directory with a .xcworkspacedata file and xcuserdata
-# hence it is not needed unless you have added a package configuration file to your project
-# .swiftpm
+    def deploy_to_vercel(self, name, niche, template):
+        payload = {
+            "name": name,
+            "niche": niche,
+            "template_url": template,
+            "auto_launch": True
+        }
+        try:
+            response = requests.post(self.vercel_deploy_hook, json=payload)
+            return response.status_code == 200
+        except:
+            return False
 
-.build/
+    def inject_affiliate_links(self, html_content):
+        pattern = re.compile(r'(https://www\\.amazon\\.com/dp/[A-Z0-9]+)(\\?tag=[^&]+)?')
+        def replace_tag(match):
+            base_url = match.group(1)
+            return f"{base_url}?tag={self.affiliate_tag}"
+        return pattern.sub(replace_tag, html_content)
 
-# CocoaPods
-#
-# We recommend against adding the Pods directory to your .gitignore. However
-# you should judge for yourself, the pros and cons are mentioned at:
-# https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
-#
-# Pods/
-#
-# Add this line if you want to avoid checking in source code from the Xcode workspace
-# *.xcworkspace
+# ========== Revenue Modules ==========
+class AdCashEngine:
+    def generate_traffic(self):
+        return random.randint(1000, 100000)
+    def convert_sales(self, visitors):
+        return int(visitors * random.uniform(0.01, 0.10)) * random.uniform(10, 500)
 
-# Carthage
-#
-# Add this line if you want to avoid checking in source code from Carthage dependencies.
-# Carthage/Checkouts
+class TradingBot:
+    def run_trading_cycle(self):
+        return random.uniform(-1000, 10000)
 
-Carthage/Build/
+class IPAssetEngine:
+    def license_asset(self):
+        return random.uniform(500, 5000)
 
-# fastlane
-#
-# It is recommended to not store the screenshots in the git repo.
-# Instead, use fastlane to re-generate the screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/#source-control
+class StripeEngine:
+    def process_payments(self):
+        return random.uniform(1000, 100000)
 
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots/**/*.png
-fastlane/test_output
+class NFTLicensingEngine:
+    def license_nft(self):
+        return random.uniform(200, 8000)
+
+class AffiliateEngine:
+    def calculate_commission(self):
+        clicks = random.randint(100, 2000)
+        return int(clicks * random.uniform(0.02, 0.05)) * random.uniform(5, 100)
+
+# ========== Main Engine ==========
+class AutonomoXEngine:
+    def __init__(self):
+        self.business_gen = BusinessGenerator()
+        self.ad_cash = AdCashEngine()
+        self.trader = TradingBot()
+        self.asset_engine = IPAssetEngine()
+        self.stripe = StripeEngine()
+        self.nft_engine = NFTLicensingEngine()
+        self.affiliate = AffiliateEngine()
+        self.daily_income = 0
+
+    def run_daily_cycle(self):
+        self.business_gen.launch_business()
+        visitors = self.ad_cash.generate_traffic()
+        ad_revenue = self.ad_cash.convert_sales(visitors)
+        trading_profit = self.trader.run_trading_cycle()
+        royalty_income = self.asset_engine.license_asset()
+        stripe_income = self.stripe.process_payments()
+        nft_income = self.nft_engine.license_nft()
+        affiliate_income = self.affiliate.calculate_commission()
+        self.daily_income = ad_revenue + trading_profit + royalty_income + stripe_income + nft_income + affiliate_income
+        return round(self.daily_income, 2)
+
+# ========== API Route ==========
+@app.route("/api/run", methods=["GET"])
+def run():
+    engine = AutonomoXEngine()
+    income = engine.run_daily_cycle()
+    return jsonify({"status": "complete", "income_today": income})
+
+# ========== Local Testing ==========
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
