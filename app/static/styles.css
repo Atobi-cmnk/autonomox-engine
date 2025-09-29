@@ -1,0 +1,54 @@
+:root {
+	--bg: #0b1320;
+	--panel: #121a2b;
+	--muted: #98a2b3;
+	--text: #e6e8ec;
+	--brand: #6ee7b7;
+	--danger: #ef4444;
+}
+
+* { box-sizing: border-box; }
+
+body {
+	margin: 0;
+	font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+	background: var(--bg);
+	color: var(--text);
+}
+
+.container {
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 24px;
+}
+
+h1 { font-weight: 700; letter-spacing: 0.3px; }
+
+.flash { list-style: none; padding: 0; }
+.flash li { padding: 8px 12px; border-radius: 8px; margin: 8px 0; }
+.flash li.error { background: color-mix(in oklab, var(--danger) 20%, black); }
+
+.form-grid fieldset { border: 1px solid #253045; padding: 16px; border-radius: 12px; margin: 16px 0; background: var(--panel); }
+.form-grid legend { color: var(--muted); }
+.form-grid label { display: grid; gap: 6px; margin: 12px 0; }
+.form-grid input, .form-grid select {
+	background: #0e1729;
+	color: var(--text);
+	padding: 10px 12px;
+	border: 1px solid #24324b;
+	border-radius: 8px;
+}
+
+.actions { margin-top: 16px; }
+button, .button {
+	background: var(--brand);
+	color: #062e1e;
+	border: none;
+	padding: 10px 16px;
+	border-radius: 10px;
+	font-weight: 700;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.card { padding: 16px; border-radius: 12px; background: var(--panel); border: 1px solid #24324b; }
