@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Send Money</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+	<div class="container">
+		<h1>Send Money</h1>
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				<ul class="flash">
+					{% for category, message in messages %}
+						<li class="{{ category }}">{{ message }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endwith %}
+
+		<form method="post" action="{{ url_for('main.transfer_form') }}" class="form-grid">
+			<fieldset>
+				<legend>Sender</legend>
+				<label>Name
+					<input name="sender_name" required />
+				</label>
+				<label>Country
+					<select name="sender_country">
+						<option value="AU">Australia (AU)</option>
+						<option value="US">United States (US)</option>
+						<option value="GB">United Kingdom (GB)</option>
+						<option value="EU">Europe (EU/IBAN)</option>
+						<option value="OTHER">Other</option>
+					</select>
+				</label>
+				<label>BSB (AU only)
+					<input name="sender_bsb" placeholder="e.g. 062000" />
+				</label>
+				<label>Account Number
+					<input name="sender_account" />
+				</label>
+				<label>SWIFT/BIC
+					<input name="sender_swift" />
+				</label>
+				<label>IBAN
+					<input name="sender_iban" />
+				</label>
+			</fieldset>
+
+			<fieldset>
+				<legend>Receiver</legend>
+				<label>Name
+					<input name="receiver_name" required />
+				</label>
+				<label>Country
+					<select name="receiver_country">
+						<option value="AU">Australia (AU)</option>
+						<option value="US">United States (US)</option>
+						<option value="GB">United Kingdom (GB)</option>
+						<option value="EU">Europe (EU/IBAN)</option>
+						<option value="OTHER">Other</option>
+					</select>
+				</label>
+				<label>BSB (AU only)
+					<input name="receiver_bsb" placeholder="e.g. 062000" />
+				</label>
+				<label>Account Number
+					<input name="receiver_account" />
+				</label>
+				<label>SWIFT/BIC
+					<input name="receiver_swift" />
+				</label>
+				<label>IBAN
+					<input name="receiver_iban" />
+				</label>
+			</fieldset>
+
+			<fieldset>
+				<legend>Payment</legend>
+				<label>Amount
+					<input name="amount" type="number" min="0.01" step="0.01" required />
+				</label>
+				<label>Currency
+					<select name="currency">
+						<option>AUD</option>
+						<option>USD</option>
+						<option>EUR</option>
+						<option>GBP</option>
+						<option>NZD</option>
+						<option>CAD</option>
+						<option>SGD</option>
+						<option>INR</option>
+					</select>
+				</label>
+				<label>Reference (optional)
+					<input name="reference" maxlength="140" />
+				</label>
+			</fieldset>
+
+			<div class="actions">
+				<button type="submit">Send</button>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

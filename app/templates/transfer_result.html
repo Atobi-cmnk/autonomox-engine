@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Transfer Result</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+	<div class="container">
+		<h1>Transfer Submitted</h1>
+		<div class="card">
+			<p><strong>Status:</strong> {{ result.status }}</p>
+			<p><strong>Transaction ID:</strong> {{ result.transaction_id }}</p>
+			<p><strong>Processed At:</strong> {{ result.processed_at }}</p>
+			<p><strong>Amount:</strong> {{ result.amount }} {{ result.currency }}</p>
+		</div>
+		<div class="actions">
+			<a class="button" href="{{ url_for('main.transfer_form') }}">Send another</a>
+		</div>
+	</div>
+</body>
+</html>
